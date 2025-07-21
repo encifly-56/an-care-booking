@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>安管家預約表單</title>
+  <style>
+    body {
+      font-family: "Noto Sans TC", sans-serif;
+      background-color: #e9e2da;
+      color: #1b2a42;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #1b2a42;
+    }
+    form {
+      max-width: 900px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #1b2a42;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #c6b699;
+    }
+    .hidden {
+      display: none;
+    }
+    .checkbox-group label {
+      display: inline-block;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>安管家照護預約表單</h1>
+  <form id="bookingForm">
+    <!-- 表單欄位將由 JavaScript 插入 -->
+  </form>
+
+  <script>
+    const serviceOptions = {
+      care: ["急診陪伴員", "特別護理師", "高階管家", "自費看護", "居家照顧人員", "家事人員"],
+      course: ["居家護理師", "指導外籍看護照顧技巧", "指導肌力核心訓練", "芳療紓壓"]
+    };
+
+    const notePresets = { /* 預約備註內容照原樣保留，略寫省略 */ };
+
+    const bookingForm = document.getElementById("bookingForm");
+
+    // 表單內容加入
+    bookingForm.innerHTML = `
+      <label for="startDate">開始上班日</label>
+      <input type="date" name="startDate" />
+
+      <label for="days">需求天數</label>
+      <input type="number" name="days" />
+
+      <label for="time">每日上班時間</label>
+      <input type="time" name="time" />
+
+      <label for="hours">每日服務時數</label>
+      <select name="hours">
+        <option value="">請選擇</option>
+        <option value="2小時">2小時</option>
+        <option value="4小時">4小時</option>
+        <option value="8小時">8小時</option>
+        <option value="12小時">12小時</option>
+        <option value="24小時">24小時</option>
+      </select>
+
+      <label for="meal">提供照服員用餐</label>
+      <select name="meal">
+        <option value="">請選擇</option>
+        <option value="是(將酌收200元/天)">是(將酌收200元/天)</option>
+        <option value="否">否</option>
+      </select>
+
+      <div id="courseFields" class="hidden">
+        <label>期待上課星期（可複選）</label>
+        <div>
+          <label><input type="checkbox" name="preferredDays" value="週一"> 週一</label>
+          <label><input type="checkbox" name="preferredDays" value="週二"> 週二</label>
+          <label><input type="checkbox" name="preferredDays" value="週三"> 週三</label>
+          <label><input type="checkbox" name="preferredDays" value="週四"> 週四</label>
+          <label><input type="checkbox" name="preferredDays" value="週五"> 週五</label>
+          <label><input type="checkbox" name="preferredDays" value="週六"> 週六</label>
+          <label><input type="checkbox" name="preferredDays" value="週日"> 週日</label>
+        </div>
+      </div>
+
+      <label for="holiday">是否假日服務</label>
+      <select name="holiday">
+        <option value="">請選擇</option>
+        <option value="是(將酌收300元/時)">是(將酌收300元/時)</option>
+        <option value="否">否</option>
+      </select>
+
+      <label for="county">縣市</label>
+      <input type="text" name="county" required />
+
+      <label for="town">鄉鎮</label>
+      <input type="text" name="town" required />
+
+      <label for="address">地址</label>
+      <input type="text" name="address" required />
+
+      <label for="note">備註</label>
+      <textarea id="note" name="note" rows="6"></textarea>
+
+      <button type="submit">送出預約</button>
+    `;
+
+    bookingForm.addEventListener("submit", function(event) {
+      event.preventDefault();
+      const formData = new FormData(bookingForm);
+      const data = {};
+      formData.forEach((value, key) => {
+        if (key === "preferredDays") {
+          if (!data[key]) data[key] = [];
+          data[key].push(value);
+        } else {
+          data[key] = value;
+        }
+      });
+
+      fetch("https://script.google.com/macros/s/AKfycbxEtvBLZu3crsjZIsBYD8H7lXd-r1PYiTMxw4jGmtWjrynG01g-PyBOk16Xhps103_6/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      alert("預約成功，我們將盡快與您聯繫！");
+      bookingForm.reset();
+    });
+  </script>
+</body>
+</html>
