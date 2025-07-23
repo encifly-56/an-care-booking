@@ -215,11 +215,59 @@
     <button type="submit">送出預約</button>
   </form>
 
-  <script>
-    const serviceOptions = {
-      care: ["急診陪伴員", "特別護理師", "高階管家", "自費看護", "居家照顧人員", "家事人員"],
-      course: ["居家護理師", "指導外籍看護照顧技巧", "指導肌力核心訓練", "芳療紓壓"]
+<script>
+  const serviceOptions = {
+    care: ["急診陪伴員", "特別護理師", "高階管家", "自費看護", "居家照顧人員", "家事人員"],
+    course: ["居家護理師", "指導外籍看護照顧技巧", "指導肌力核心訓練", "芳療紓壓"]
+  };
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const categorySelect = document.querySelector("select[name='category']");
+    const serviceSelect = document.querySelector("select[name='service']");
+
+    categorySelect.addEventListener("change", () => {
+      const selected = categorySelect.value;
+      const options = serviceOptions[selected] || [];
+
+      serviceSelect.innerHTML = '<option value="">請選擇服務項目</option>';
+      options.forEach(item => {
+        const opt = document.createElement("option");
+        opt.value = item;
+        opt.textContent = item;
+        serviceSelect.appendChild(opt);
+      });
+
+      // 顯示對應區塊
+      document.getElementById("careFields").classList.toggle("hidden", selected !== "care");
+      document.getElementById("courseFields").classList.toggle("hidden", selected !== "course");
+    });
+
+    // 
+    const notePresets = {
+      "急診陪伴員": "預約急診陪伴員服務\n送醫原因：\n醫院地點：\n特殊備註：",
+      "特別護理師": "預約特別護理師服務\n目前使用管路：（如鼻胃管、氣切、導尿管等）\n照護重點：\n備註：",
+      "高階管家": "預約高階管家服務\n目前使用管路：（如鼻胃管、氣切、導尿管等）\n照護重點：\n認知狀態：（正常／輕度退化／中重度退化）\n日常活動安排需求：\n身體狀況與飲食作息：\n語言溝通方式：\n備註：",
+      ...
     };
+
+    const serviceSelect = document.getElementById("service");
+    serviceSelect.addEventListener("change", () => {
+      const selectedService = serviceSelect.value;
+      const noteTextarea = document.querySelector("textarea[name='note']");
+      if (notePresets[selectedService]) {
+        noteTextarea.value = notePresets[selectedService];
+      } else {
+        noteTextarea.value = "";
+      }
+
+      // 
+      document.getElementById("houseworkOptions").classList.toggle("hidden", selectedService !== "家事人員");
+      const nursingRoles = ["急診陪伴員", "特別護理師", "高階管家", "自費看護", "居家照顧人員"];
+      document.getElementById("nursingDetails").classList.toggle("hidden", !nursingRoles.includes(selectedService));
+    });
+  });
+</script>
+</body>
 
     const notePresets = {
       "急診陪伴員": 預約急診陪伴員服務\n送醫原因：\n醫院地點：\n特殊備註：,
