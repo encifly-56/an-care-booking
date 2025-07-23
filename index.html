@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>安管家預約表單</title>
   <style>
     body {
@@ -19,29 +19,30 @@
     form {
       max-width: 900px;
       margin: 0 auto;
-      background-color: white;
+      background-color: #fff;
       padding: 20px;
-      border-radius: 10px;
+      border-radius: 12px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
     label {
       display: block;
-      margin-top: 15px;
+      margin-top: 16px;
     }
     input, select, textarea {
       width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      border-radius: 5px;
+      padding: 10px;
+      margin-top: 6px;
+      border-radius: 6px;
       border: 1px solid #ccc;
+      box-sizing: border-box;
     }
     button {
       background-color: #1b2a42;
       color: white;
       padding: 12px 20px;
       border: none;
-      border-radius: 5px;
-      margin-top: 20px;
+      border-radius: 6px;
+      margin-top: 24px;
       cursor: pointer;
     }
     button:hover {
@@ -59,7 +60,159 @@
 <body>
   <h1>安管家照護預約表單</h1>
   <form id="bookingForm">
-    <!-- 表單欄位將由 JavaScript 插入 -->
+    <label>預約類別</label>
+    <select name="category" id="category" required>
+      <option value="">請選擇</option>
+      <option value="care">照顧人力</option>
+      <option value="course">紓壓／課程</option>
+    </select>
+
+    <label>服務項目</label>
+    <select name="service" id="service" required>
+      <option value="">請先選擇預約類別</option>
+    </select>
+
+    <label>姓名</label>
+    <input type="text" name="name" required />
+
+    <label>年齡</label>
+    <input type="number" name="age" />
+
+    <label>身高 (cm)</label>
+    <input type="number" name="height" />
+
+    <label>體重 (kg)</label>
+    <input type="number" name="weight" />
+
+    <label>性別</label>
+    <select name="gender">
+      <option value="">請選擇</option>
+      <option value="男">男</option>
+      <option value="女">女</option>
+    </select>
+
+    <label>疾病史</label>
+    <textarea name="diseaseHistory" rows="2"></textarea>
+
+    <!-- 動態顯示區塊：照顧人力類 -->
+    <div id="careFields" class="hidden">
+      <label>開始上班日</label>
+      <input type="date" name="startDate" />
+
+      <label>需求天數</label>
+      <input type="number" name="days" />
+
+      <label>每日上班時間</label>
+      <input type="time" name="time" />
+
+      <label>頻率</label>
+      <select name="frequency">
+        <option value="">請選擇</option>
+        <option value="長期">長期</option>
+        <option value="短期">短期</option>
+      </select>
+
+      <label>每日服務時數</label>
+      <select name="hours" id="hours">
+        <option value="">請選擇</option>
+        <option value="2小時">2小時</option>
+        <option value="4小時">4小時</option>
+        <option value="8小時">8小時</option>
+        <option value="10小時">10小時</option>
+        <option value="12小時">12小時</option>
+        <option value="24小時">24小時</option>
+      </select>
+
+      <div id="houseworkOptions" class="hidden">
+        <label>服務內容（可複選）</label>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="housework" value="打掃">打掃</label>
+          <label><input type="checkbox" name="housework" value="洗衣">洗衣</label>
+          <label><input type="checkbox" name="housework" value="備餐">備餐</label>
+          <label><input type="checkbox" name="housework" value="陪伴">陪伴</label>
+        </div>
+      </div>
+
+      <div id="nursingDetails" class="hidden">
+        <label>語言</label>
+        <select name="language">
+          <option value="">請選擇</option>
+          <option value="國語">國語</option>
+          <option value="台語">台語</option>
+          <option value="英文">英文</option>
+        </select>
+
+        <label>使用管路（可複選）</label>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="tubes" value="無">無</label>
+          <label><input type="checkbox" name="tubes" value="鼻胃管">鼻胃管</label>
+          <label><input type="checkbox" name="tubes" value="氣切">氣切</label>
+          <label><input type="checkbox" name="tubes" value="導尿管">導尿管</label>
+          <label><input type="checkbox" name="tubes" value="造瘻口">造瘻口</label>
+        </div>
+
+        <label>照護重點</label>
+        <textarea name="careFocus" rows="2"></textarea>
+
+        <label>認知狀態</label>
+        <select name="cognitive">
+          <option value="">請選擇</option>
+          <option value="正常">正常</option>
+          <option value="輕度退化">輕度退化</option>
+          <option value="中重度退化">中重度退化</option>
+        </select>
+
+        <label>領有證明手冊</label>
+        <select name="certification">
+          <option value="">請選擇</option>
+          <option value="無">無</option>
+          <option value="失智症手冊">失智症手冊</option>
+          <option value="身障手冊">身障手冊</option>
+        </select>
+      </div>
+
+      <label>提供照服員用餐</label>
+      <select name="meal">
+        <option value="">請選擇</option>
+        <option value="是(將酌收200元/天)">是</option>
+        <option value="否">否</option>
+      </select>
+    </div>
+
+    <!-- 動態區塊：課程類 -->
+    <div id="courseFields" class="hidden">
+      <label>期待上課星期（可複選）</label>
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="preferredDays" value="週一">週一</label>
+        <label><input type="checkbox" name="preferredDays" value="週二">週二</label>
+        <label><input type="checkbox" name="preferredDays" value="週三">週三</label>
+        <label><input type="checkbox" name="preferredDays" value="週四">週四</label>
+        <label><input type="checkbox" name="preferredDays" value="週五">週五</label>
+        <label><input type="checkbox" name="preferredDays" value="週六">週六</label>
+        <label><input type="checkbox" name="preferredDays" value="週日">週日</label>
+      </div>
+    </div>
+
+    <label>假日服務</label>
+    <select name="holiday">
+      <option value="">請選擇</option>
+      <option value="是">是</option>
+      <option value="否">否</option>
+    </select>
+
+    <label>縣市</label>
+    <input type="text" name="county" required />
+
+    <label>鄉鎮</label>
+    <input type="text" name="town" required />
+
+    <label>地址</label>
+    <input type="text" name="address" required />
+
+    <label>備註</label>
+    <textarea name="note" rows="4"></textarea>
+
+    <button type="submit">送出預約</button>
   </form>
 
   <script>
@@ -68,76 +221,40 @@
       course: ["居家護理師", "指導外籍看護照顧技巧", "指導肌力核心訓練", "芳療紓壓"]
     };
 
-    const notePresets = { /* 預約備註內容照原樣保留，略寫省略 */ };
+    const notePresets = {
+      "急診陪伴員": 預約急診陪伴員服務\n送醫原因：\n醫院地點：\n特殊備註：,
+      "特別護理師": 預約特別護理師服務\n目前使用管路：（如鼻胃管、氣切、導尿管等）\n照護重點：\n備註：,
+      "高階管家": 預約高階管家服務\n目前使用管路：（如鼻胃管、氣切、導尿管等）\n照護重點：\n認知狀態：（正常／輕度退化／中重度退化）\n日常活動安排需求：\n身體狀況與飲食作息：\n語言溝通方式：\n備註：,
+      "自費看護": 預約自費看護服務\n目前使用管路：（如鼻胃管、氣切、導尿管等）\n照護重點：\n認知狀態：（正常／輕度退化／中重度退化）\n照顧需求：（如翻身拍背、洗澡、更換尿布等) \n備註：,,
+      "居家照顧人員": 預約居家照顧人員服務\n目前使用管路：（如鼻胃管、氣切、導尿管等）\n照護重點：\n認知狀態：（正常／輕度退化／中重度退化）\n照顧需求：（如翻身拍背、洗澡、更換尿布等長照項目) ：\n備註：(期待居服員之要求),
+      "家事人員": 預約家事服務\n服務內容：（請勾選：打掃／洗衣／備餐／陪伴）\n是否有寵物：\n備註：,
+      "居家護理師": 預約居家護理服務\n服務需求：(傷口照護／換管／藥物注射/護理衛教等)：\n備註：,
+      "指導外籍看護照顧技巧": 預約外籍看護指導服務\n目前照顧者（外籍看護）來台經驗與語言能力：\n希望指導的技巧內容：\n備註：,
+      "指導肌力核心訓練": 預約肌力核心訓練指導\n是否臥床或使用輔具：\n訓練目標或需求：\n居家訓練場地描述：(是否有工具)\n備註：,
+      "芳療紓壓": 預約精油紓壓服務\n紓壓對象：（家屬／被照顧者）\n身心壓力描述：\n是否有皮膚過敏史：\n備註：
+    };
 
-    const bookingForm = document.getElementById("bookingForm");
+    const categorySelect = document.getElementById("category");
+    const serviceSelect = document.getElementById("service");
 
-    // 表單內容加入
-    bookingForm.innerHTML = `
-      <label for="startDate">開始上班日</label>
-      <input type="date" name="startDate" />
+    categorySelect.addEventListener("change", () => {
+      const selected = categorySelect.value;
+      serviceSelect.innerHTML = '<option value="">請選擇</option>';
+      if (serviceMap[selected]) {
+        serviceMap[selected].forEach(item => {
+          const opt = document.createElement("option");
+          opt.value = item;
+          opt.textContent = item;
+          serviceSelect.appendChild(opt);
+        });
+      }
+      document.getElementById("careFields").classList.toggle("hidden", selected !== "care");
+      document.getElementById("courseFields").classList.toggle("hidden", selected !== "course");
+    });
 
-      <label for="days">需求天數</label>
-      <input type="number" name="days" />
-
-      <label for="time">每日上班時間</label>
-      <input type="time" name="time" />
-
-      <label for="hours">每日服務時數</label>
-      <select name="hours">
-        <option value="">請選擇</option>
-        <option value="2小時">2小時</option>
-        <option value="4小時">4小時</option>
-        <option value="8小時">8小時</option>
-        <option value="12小時">12小時</option>
-        <option value="24小時">24小時</option>
-      </select>
-
-      <label for="meal">提供照服員用餐</label>
-      <select name="meal">
-        <option value="">請選擇</option>
-        <option value="是(將酌收200元/天)">是(將酌收200元/天)</option>
-        <option value="否">否</option>
-      </select>
-
-      <div id="courseFields" class="hidden">
-        <label>期待上課星期（可複選）</label>
-        <div>
-          <label><input type="checkbox" name="preferredDays" value="週一"> 週一</label>
-          <label><input type="checkbox" name="preferredDays" value="週二"> 週二</label>
-          <label><input type="checkbox" name="preferredDays" value="週三"> 週三</label>
-          <label><input type="checkbox" name="preferredDays" value="週四"> 週四</label>
-          <label><input type="checkbox" name="preferredDays" value="週五"> 週五</label>
-          <label><input type="checkbox" name="preferredDays" value="週六"> 週六</label>
-          <label><input type="checkbox" name="preferredDays" value="週日"> 週日</label>
-        </div>
-      </div>
-
-      <label for="holiday">是否假日服務</label>
-      <select name="holiday">
-        <option value="">請選擇</option>
-        <option value="是(將酌收300元/時)">是(將酌收300元/時)</option>
-        <option value="否">否</option>
-      </select>
-
-      <label for="county">縣市</label>
-      <input type="text" name="county" required />
-
-      <label for="town">鄉鎮</label>
-      <input type="text" name="town" required />
-
-      <label for="address">地址</label>
-      <input type="text" name="address" required />
-
-      <label for="note">備註</label>
-      <textarea id="note" name="note" rows="6"></textarea>
-
-      <button type="submit">送出預約</button>
-    `;
-
-    bookingForm.addEventListener("submit", function(event) {
-      event.preventDefault();
-      const formData = new FormData(bookingForm);
+    document.getElementById("bookingForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const formData = new FormData(e.target);
       const data = {};
       formData.forEach((value, key) => {
         if (key === "preferredDays") {
@@ -148,7 +265,7 @@
         }
       });
 
-      fetch("https://script.google.com/macros/s/AKfycbxEtvBLZu3crsjZIsBYD8H7lXd-r1PYiTMxw4jGmtWjrynG01g-PyBOk16Xhps103_6/exec", {
+      fetch("https://script.google.com/macros/s/AKfycbxgJc4qWs34qlUrbpwke4Jd6GFE4VBGlffuVb9pT08Jsj0OkCggAMbNo0WW3WuPft0_/exec", {
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
@@ -156,7 +273,7 @@
       });
 
       alert("預約成功，我們將盡快與您聯繫！");
-      bookingForm.reset();
+      e.target.reset();
     });
   </script>
 </body>
