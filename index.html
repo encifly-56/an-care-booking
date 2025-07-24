@@ -94,7 +94,7 @@
     <label>疾病史</label>
     <textarea name="diseaseHistory" rows="2"></textarea>
 
-    <!-- 動態顯示區塊：照顧人力類 -->
+    <!-- 照顧人力專屬區塊 -->
     <div id="careFields" class="hidden">
       <label>開始上班日</label>
       <input type="date" name="startDate" />
@@ -113,7 +113,7 @@
       </select>
 
       <label>每日服務時數</label>
-      <select name="hours" id="hours">
+      <select name="hours">
         <option value="">請選擇</option>
         <option value="2小時">2小時</option>
         <option value="4小時">4小時</option>
@@ -179,7 +179,7 @@
       </select>
     </div>
 
-    <!-- 動態區塊：課程類 -->
+    <!-- 課程專屬 -->
     <div id="courseFields" class="hidden">
       <label>期待上課星期（可複選）</label>
       <div class="checkbox-group">
@@ -215,113 +215,82 @@
     <button type="submit">送出預約</button>
   </form>
 
-<script>
-  const serviceOptions = {
-    care: ["急診陪伴員", "特別護理師", "高階管家", "自費看護", "居家照顧人員", "家事人員"],
-    course: ["居家護理師", "指導外籍看護照顧技巧", "指導肌力核心訓練", "芳療紓壓"]
-  };
+  <script>
+    const serviceOptions = {
+      care: ["急診陪伴員", "特別護理師", "高階管家", "自費看護", "居家照顧人員", "家事人員"],
+      course: ["居家護理師", "指導外籍看護照顧技巧", "指導肌力核心訓練", "芳療紓壓"]
+    };
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const categorySelect = document.querySelector("select[name='category']");
-    const serviceSelect = document.querySelector("select[name='service']");
-
-    categorySelect.addEventListener("change", () => {
-      const selected = categorySelect.value;
-      const options = serviceOptions[selected] || [];
-
-      serviceSelect.innerHTML = '<option value="">請選擇服務項目</option>';
-      options.forEach(item => {
-        const opt = document.createElement("option");
-        opt.value = item;
-        opt.textContent = item;
-        serviceSelect.appendChild(opt);
-      });
-
-      // 顯示對應區塊
-      document.getElementById("careFields").classList.toggle("hidden", selected !== "care");
-      document.getElementById("courseFields").classList.toggle("hidden", selected !== "course");
-    });
-
-    // 
     const notePresets = {
       "急診陪伴員": "預約急診陪伴員服務\n送醫原因：\n醫院地點：\n特殊備註：",
       "特別護理師": "預約特別護理師服務\n目前使用管路：（如鼻胃管、氣切、導尿管等）\n照護重點：\n備註：",
-      "高階管家": "預約高階管家服務\n目前使用管路：（如鼻胃管、氣切、導尿管等）\n照護重點：\n認知狀態：（正常／輕度退化／中重度退化）\n日常活動安排需求：\n身體狀況與飲食作息：\n語言溝通方式：\n備註：",
-      ...
+      "高階管家": "預約高階管家服務\n目前使用管路：（如鼻胃管、氣切、導尿管等）\n照護重點：\n認知狀態：\n日常活動安排需求：\n身體狀況與飲食作息：\n語言溝通方式：\n備註：",
+      "自費看護": "預約自費看護服務\n目前使用管路：\n照護重點：\n認知狀態：\n照顧需求：\n備註：",
+      "居家照顧人員": "預約居家照顧人員服務\n目前使用管路：\n照護重點：\n認知狀態：\n照顧需求：\n備註：",
+      "家事人員": "預約家事服務\n服務內容：\n是否有寵物：\n備註：",
+      "居家護理師": "預約居家護理服務\n服務需求：\n備註：",
+      "指導外籍看護照顧技巧": "預約外籍看護指導服務\n看護來台經驗與語言能力：\期待指導內容：\n備註：",
+      "指導肌力核心訓練": "預約肌力訓練\n是否臥床：\n目標：\n場地描述：\n備註：",
+      "芳療紓壓": "預約芳療紓壓\n紓壓對象：\n身心狀況：\n過敏史：\n備註："
     };
 
-    const serviceSelect = document.getElementById("service");
-    serviceSelect.addEventListener("change", () => {
-      const selectedService = serviceSelect.value;
-      const noteTextarea = document.querySelector("textarea[name='note']");
-      if (notePresets[selectedService]) {
-        noteTextarea.value = notePresets[selectedService];
-      } else {
-        noteTextarea.value = "";
-      }
+    document.addEventListener("DOMContentLoaded", () => {
+      const category = document.getElementById("category");
+      const service = document.getElementById("service");
+      const note = document.querySelector("textarea[name='note']");
 
-      // 
-      document.getElementById("houseworkOptions").classList.toggle("hidden", selectedService !== "家事人員");
-      const nursingRoles = ["急診陪伴員", "特別護理師", "高階管家", "自費看護", "居家照顧人員"];
-      document.getElementById("nursingDetails").classList.toggle("hidden", !nursingRoles.includes(selectedService));
-    });
-  });
-</script>
-</body>
-
-    const notePresets = {
-      "急診陪伴員": 預約急診陪伴員服務\n送醫原因：\n醫院地點：\n特殊備註：,
-      "特別護理師": 預約特別護理師服務\n目前使用管路：（如鼻胃管、氣切、導尿管等）\n照護重點：\n備註：,
-      "高階管家": 預約高階管家服務\n目前使用管路：（如鼻胃管、氣切、導尿管等）\n照護重點：\n認知狀態：（正常／輕度退化／中重度退化）\n日常活動安排需求：\n身體狀況與飲食作息：\n語言溝通方式：\n備註：,
-      "自費看護": 預約自費看護服務\n目前使用管路：（如鼻胃管、氣切、導尿管等）\n照護重點：\n認知狀態：（正常／輕度退化／中重度退化）\n照顧需求：（如翻身拍背、洗澡、更換尿布等) \n備註：,,
-      "居家照顧人員": 預約居家照顧人員服務\n目前使用管路：（如鼻胃管、氣切、導尿管等）\n照護重點：\n認知狀態：（正常／輕度退化／中重度退化）\n照顧需求：（如翻身拍背、洗澡、更換尿布等長照項目) ：\n備註：(期待居服員之要求),
-      "家事人員": 預約家事服務\n服務內容：（請勾選：打掃／洗衣／備餐／陪伴）\n是否有寵物：\n備註：,
-      "居家護理師": 預約居家護理服務\n服務需求：(傷口照護／換管／藥物注射/護理衛教等)：\n備註：,
-      "指導外籍看護照顧技巧": 預約外籍看護指導服務\n目前照顧者（外籍看護）來台經驗與語言能力：\n希望指導的技巧內容：\n備註：,
-      "指導肌力核心訓練": 預約肌力核心訓練指導\n是否臥床或使用輔具：\n訓練目標或需求：\n居家訓練場地描述：(是否有工具)\n備註：,
-      "芳療紓壓": 預約精油紓壓服務\n紓壓對象：（家屬／被照顧者）\n身心壓力描述：\n是否有皮膚過敏史：\n備註：
-    };
-
-    const categorySelect = document.getElementById("category");
-    const serviceSelect = document.getElementById("service");
-
-    categorySelect.addEventListener("change", () => {
-      const selected = categorySelect.value;
-      serviceSelect.innerHTML = '<option value="">請選擇</option>';
-      if (serviceMap[selected]) {
-        serviceMap[selected].forEach(item => {
+      category.addEventListener("change", () => {
+        const type = category.value;
+        const options = serviceOptions[type] || [];
+        service.innerHTML = '<option value="">請選擇服務項目</option>';
+        options.forEach(s => {
           const opt = document.createElement("option");
-          opt.value = item;
-          opt.textContent = item;
-          serviceSelect.appendChild(opt);
+          opt.value = s;
+          opt.textContent = s;
+          service.appendChild(opt);
         });
-      }
-      document.getElementById("careFields").classList.toggle("hidden", selected !== "care");
-      document.getElementById("courseFields").classList.toggle("hidden", selected !== "course");
-    });
 
-    document.getElementById("bookingForm").addEventListener("submit", function (e) {
-      e.preventDefault();
-      const formData = new FormData(e.target);
-      const data = {};
-      formData.forEach((value, key) => {
-        if (key === "preferredDays") {
-          if (!data[key]) data[key] = [];
-          data[key].push(value);
-        } else {
-          data[key] = value;
-        }
+        document.getElementById("careFields").classList.toggle("hidden", type !== "care");
+        document.getElementById("courseFields").classList.toggle("hidden", type !== "course");
+        note.value = "";
+        document.getElementById("houseworkOptions").classList.add("hidden");
+        document.getElementById("nursingDetails").classList.add("hidden");
       });
 
-      fetch("https://script.google.com/macros/s/AKfycbxgJc4qWs34qlUrbpwke4Jd6GFE4VBGlffuVb9pT08Jsj0OkCggAMbNo0WW3WuPft0_/exec", {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
+      service.addEventListener("change", () => {
+        const val = service.value;
+        note.value = notePresets[val] || "";
+        document.getElementById("houseworkOptions").classList.toggle("hidden", val !== "家事人員");
+        const careRoles = ["急診陪伴員", "特別護理師", "高階管家", "自費看護", "居家照顧人員"];
+        document.getElementById("nursingDetails").classList.toggle("hidden", !careRoles.includes(val));
       });
 
-      alert("預約成功，我們將盡快與您聯繫！");
-      e.target.reset();
+      document.getElementById("bookingForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const data = {};
+        formData.forEach((value, key) => {
+          if (key === "preferredDays") {
+            if (!data[key]) data[key] = [];
+            data[key].push(value);
+          } else if (data[key]) {
+            if (!Array.isArray(data[key])) data[key] = [data[key]];
+            data[key].push(value);
+          } else {
+            data[key] = value;
+          }
+        });
+
+        fetch("https://script.google.com/macros/s/AKfycbxgJc4qWs34qlUrbpwke4Jd6GFE4VBGlffuVb9pT08Jsj0OkCggAMbNo0WW3WuPft0_/exec", {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+
+        alert("預約成功，我們將盡快與您聯繫！");
+        e.target.reset();
+      });
     });
   </script>
 </body>
