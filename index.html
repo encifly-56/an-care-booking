@@ -72,7 +72,7 @@
       <option value="">請先選擇預約類別</option>
     </select>
 
-    <label>姓名</label>
+    <label>使用者姓名</label>
     <input type="text" name="name" required />
 
     <label>年齡</label>
@@ -105,12 +105,23 @@
       <label>每日上班時間</label>
       <input type="time" name="time" />
 
+
+      <div id="courseFields" class="hidden">
       <label>頻率</label>
-      <select name="frequency">
+      <select name="courseFrequency">
         <option value="">請選擇</option>
-        <option value="長期">長期</option>
         <option value="短期">短期</option>
+        <option value="長期">長期</option>
       </select>
+
+      <label>時段（可複選）</label>
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="courseTimes" value="上午">上午</label>
+        <label><input type="checkbox" name="courseTimes" value="中午">中午</label>
+        <label><input type="checkbox" name="courseTimes" value="下午">下午</label>
+        <label><input type="checkbox" name="courseTimes" value="傍晚">傍晚</label>
+      </div>
+    </div>
 
       <label>每日服務時數</label>
       <select name="hours">
@@ -129,18 +140,19 @@
           <label><input type="checkbox" name="housework" value="打掃">打掃</label>
           <label><input type="checkbox" name="housework" value="洗衣">洗衣</label>
           <label><input type="checkbox" name="housework" value="備餐">備餐</label>
-          <label><input type="checkbox" name="housework" value="陪伴">陪伴</label>
+          <label><input type="checkbox" name="housework" value="大掃除(請至備註輸入範圍)">大掃除(請至備註輸入範圍)</label>
         </div>
       </div>
 
       <div id="nursingDetails" class="hidden">
-        <label>語言</label>
-        <select name="language">
+        <label>語言（可複選）</label>
+        <div name="language">
           <option value="">請選擇</option>
           <option value="國語">國語</option>
           <option value="台語">台語</option>
+          <option value="客語">客語</option>
           <option value="英文">英文</option>
-        </select>
+        </div>
 
         <label>使用管路（可複選）</label>
         <div class="checkbox-group">
@@ -222,16 +234,16 @@
     };
 
     const notePresets = {
-      "急診陪伴員": "預約急診陪伴員服務\n送醫原因：\n醫院地點：\n特殊備註：",
-      "特別護理師": "預約特別護理師服務\n目前使用管路：（如鼻胃管、氣切、導尿管等）\n照護重點：\n備註：",
-      "高階管家": "預約高階管家服務\n目前使用管路：（如鼻胃管、氣切、導尿管等）\n照護重點：\n認知狀態：\n日常活動安排需求：\n身體狀況與飲食作息：\n語言溝通方式：\n備註：",
-      "自費看護": "預約自費看護服務\n目前使用管路：\n照護重點：\n認知狀態：\n照顧需求：\n備註：",
-      "居家照顧人員": "預約居家照顧人員服務\n目前使用管路：\n照護重點：\n認知狀態：\n照顧需求：\n備註：",
-      "家事人員": "預約家事服務\n服務內容：\n是否有寵物：\n備註：",
-      "居家護理師": "預約居家護理服務\n服務需求：\n備註：",
-      "指導外籍看護照顧技巧": "預約外籍看護指導服務\n看護來台經驗與語言能力：\期待指導內容：\n備註：",
-      "指導肌力核心訓練": "預約肌力訓練\n是否臥床：\n目標：\n場地描述：\n備註：",
-      "芳療紓壓": "預約芳療紓壓\n紓壓對象：\n身心狀況：\n過敏史：\n備註："
+      "急診陪伴員": "\n送醫原因：\n醫院地點：\n特殊備註：",
+      "特別護理師": "\n目前使用管路：（如鼻胃管、氣切、導尿管等）\n照護重點：\n備註：",
+      "高階管家": "\n目前使用管路：（如鼻胃管、氣切、導尿管等）\n照護重點：\n認知狀態：\n日常活動安排需求：\n身體狀況與飲食作息：\n語言溝通方式：\n備註：",
+      "自費看護": "\n目前使用管路：\n照護重點：\n認知狀態：\n照顧需求：\n備註：",
+      "居家照顧人員": "\n目前使用管路：\n照護重點：\n認知狀態：\n照顧需求：\n備註：",
+      "家事人員": "\n服務內容：\n是否有寵物：\n備註：",
+      "居家護理師": "\n服務需求：\n備註：",
+      "指導外籍看護照顧技巧": "\n看護來台經驗與語言能力：\期待指導內容：\n備註：",
+      "指導肌力核心訓練": "\n是否臥床：\n目標：\n場地描述：\n備註：",
+      "芳療紓壓": "\n紓壓對象：(照顧者/被照顧者)\n身心狀況：\n過敏史：\n是否已向醫師同意/建議：\n備註："
     };
 
     document.addEventListener("DOMContentLoaded", () => {
